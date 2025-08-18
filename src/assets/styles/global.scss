@@ -7,3 +7,12 @@ body{
 img{
     -webkit-user-drag: none;
 }
+
+.demo-logo-vertical{
+    width: 64px;
+    height: 64px;
+    // background-color: green;
+    background-image: url('/logo.png');
+    background-repeat: no-repeat;
+    margin: 8px;
+}
