@@ -15,17 +15,45 @@ const withLoadingComponent = (component:JSX.Element)=>{
 const paths = [
     {
         path:'/',
-        element: <Navigate to='/home'/>
-    },
-    {
-        path:'/home',
-        element: withLoadingComponent(<Home/>),
+        element: <Home/>,
         children:[
             {
                 path:'page1',
-                element:<Page1/>
+                element:withLoadingComponent(<Page1/>)
+            },
+            {
+                path:'page2',
+                element:withLoadingComponent(<Page1/>)
+            },
+            {
+                path:'page3/page301',
+                element:withLoadingComponent(<Page1/>)
+            },
+            {
+                path:'page3/page302',
+                element:withLoadingComponent(<Page1/>)
+            },
+            {
+                path:'page3/page303',
+                element:withLoadingComponent(<Page1/>)
+            },
+            {
+                path:'page4/page401',
+                element:withLoadingComponent(<Page1/>)
+            },
+            {
+                path:'page4/page402',
+                element:withLoadingComponent(<Page1/>)
+            },
+            {
+                path:'page5',
+                element:withLoadingComponent(<Page1/>)
             }
         ]
+    },
+    {
+        path:'*',
+        element: <Navigate to='/home'/>
     }
 ]
 
