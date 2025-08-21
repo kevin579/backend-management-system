@@ -1,9 +1,9 @@
 import React,{lazy, type JSX} from 'react'
 import {Navigate } from 'react-router-dom'
-
+import Login from '../view/Login'
 const Home = lazy(()=>import('../view/Home'))
-// const About = lazy(()=>import('../view/About'))
 const Page1 = lazy(()=>import('../view/About'))
+
 
 const withLoadingComponent = (component:JSX.Element)=>{
     return (
@@ -50,6 +50,10 @@ const paths = [
                 element:withLoadingComponent(<Page1/>)
             }
         ]
+    },
+    {
+        path:'/login',
+        element:<Login/>
     },
     {
         path:'*',
