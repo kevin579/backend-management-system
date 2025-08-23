@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from "../store/hooks"
 
 export default function About() {
   const num = useAppSelector((state)=>(
-    state.configItem.num
+    state.r1.num
   ))
 
   const dispatch = useAppDispatch();
