@@ -1,4 +1,4 @@
-// store/hooks.ts
+// Used for TS type 
 import {useDispatch, useSelector } from "react-redux";
 import type {TypedUseSelectorHook} from "react-redux"
 
