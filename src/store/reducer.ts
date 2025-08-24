@@ -7,7 +7,8 @@ const Reducer = createSlice({
     },
     reducers:{
         add: (state,action)=>{
-            state.num+=action.payload;
+           state.num+=action.payload
+            
         }
     }
 })
