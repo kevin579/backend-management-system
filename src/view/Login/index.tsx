@@ -1,8 +1,11 @@
-import {useEffect, useState, type ChangeEvent} from 'react'
+import {useEffect, useState, useRef, type ChangeEvent} from 'react'
+import { useNavigate } from 'react-router-dom';
+import { Input, Space, Button } from "antd";
+import ReCAPTCHA from "react-google-recaptcha";
+import '@ant-design/v5-patch-for-react-19';
+
 import style from './login.module.scss'
 import background from "./init.ts"
-
-import { Input, Space, Button } from "antd";
 import './login.less'
 
 const View = ()=>{
@@ -10,6 +13,8 @@ const View = ()=>{
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
     const [captcha,setCaptcha] = useState('');
+    const navigate = useNavigate();
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
 
     const usernameChange = (e:ChangeEvent<HTMLInputElement>)=>{
         setUsername(e.target.value);
@@ -19,9 +24,34 @@ const View = ()=>{
         setPassword(e.target.value);
         console.log(password);
     }
-    const captchaChange = (e:ChangeEvent<HTMLInputElement>)=>{
-        setCaptcha(e.target.value);
-        console.log(captcha);
+    const captchaChange = (value:string|null)=>{
+        value = value || ''
+        setCaptcha(value);
+        console.log(value);
+    }
+
+    const handleLogin = async()=>{
+        if (!captcha){
+            alert('Please verify')
+            return;
+        }
+        console.log(username,password,captcha);
+        const res = await fetch('http://127.0.0.1:4000/api/login',{
+            method:'POST',
+            headers: {'Content-Type':'application/json'},
+            body:JSON.stringify({username,password,captcha})
+        })
+
+        const data = await res.json();
+
+        if (res.ok){
+            console.log(data);
+            navigate('/')
+        }else{
+            alert('fail')
+        }
+        recaptchaRef.current?.reset();
+        setCaptcha('');
     }
 
     useEffect(()=>{
@@ -42,11 +72,12 @@ const View = ()=>{
                     <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
                         <Input placeholder="Username" onChange={usernameChange}/>
                         <Input.Password placeholder="Password" onChange={passwordChange}/>
-                        <div className="captchBox">
-                            <Input placeholder='Captcha' style={{width:350}} onChange={captchaChange}/>
-                            <img src="../../../public/logo.png" alt="" className= "captchImg"/>
-                        </div>
-                        <Button type="primary" block>Login</Button>
+                        <ReCAPTCHA
+                            ref = {recaptchaRef}
+                            sitekey="6LdSXLMrAAAAALiDDFTu7ujJcNKuyPYbJ0hsuRtI"
+                            onChange={captchaChange}
+                        />
+                        <Button type="primary" block onClick={handleLogin}>Login</Button>
                     </Space>
                 </div>
             </div>
