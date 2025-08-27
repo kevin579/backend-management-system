@@ -27,7 +27,7 @@ const View = ()=>{
     const captchaChange = (value:string|null)=>{
         value = value || ''
         setCaptcha(value);
-        console.log(value);
+        // console.log(value);
     }
 
     const handleLogin = async()=>{
@@ -35,7 +35,7 @@ const View = ()=>{
             alert('Please verify')
             return;
         }
-        console.log(username,password,captcha);
+        // console.log(username,password,captcha);
         const res = await fetch('http://127.0.0.1:4000/api/login',{
             method:'POST',
             headers: {'Content-Type':'application/json'},
@@ -43,9 +43,9 @@ const View = ()=>{
         })
 
         const data = await res.json();
-
+        console.log(data.message);
         if (res.ok){
-            console.log(data);
+            
             navigate('/')
         }else{
             alert('fail')
@@ -57,7 +57,7 @@ const View = ()=>{
     useEffect(()=>{
         background();
         window.onresize = ()=>background();
-    })
+    },[])
     return (
         <div className={style.loginPage + " loginPage"}>
             {/* background */}

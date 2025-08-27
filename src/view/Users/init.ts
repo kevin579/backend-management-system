@@ -10,7 +10,7 @@ h = canvas.height = windowHeight,
 
 hue = 217,
 stars:IntStart[] = [],
-maxStars = 1500;//星星数量
+maxStars = 1500;
 
 let count = 0;
 
@@ -51,7 +51,6 @@ function maxOrbit(x:number, y:number) {
 const max = Math.max(x, y),
   diameter = Math.round(Math.sqrt(max * max + max * max));
 return diameter / 2;
-//星星移动范围，值越大范围越小，
 }
 interface IntStart{
 orbitRadius:number;
@@ -67,12 +66,12 @@ const Star = function(this: IntStart) {
 
 this.orbitRadius = random(maxOrbit(w, h));
 this.radius = random(60, this.orbitRadius) / 18; 
-//星星大小
+
 this.orbitX = w / 2;
 this.orbitY = h / 2;
 this.timePassed = random(0, maxStars);
 this.speed = random(this.orbitRadius) / 500000; 
-//星星移动速度
+
 this.alpha = random(2, 10) / 10;
 
 count++;
@@ -101,7 +100,7 @@ new Star.prototype.constructor();
 
 function animation() {
 ctx.globalCompositeOperation = 'source-over';
-ctx.globalAlpha = 0.5; //尾巴
+ctx.globalAlpha = 0.5; 
 ctx.fillStyle = 'hsla(' + hue + ', 64%, 6%, 2)';
 ctx.fillRect(0, 0, w, h)
 

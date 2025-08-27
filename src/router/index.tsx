@@ -1,6 +1,7 @@
 import React,{lazy, type JSX} from 'react'
 import {Navigate } from 'react-router-dom'
-import Login from '../view/Login'
+import Login from '../view/Users/login'
+import Register from '../view/Users/register'
 const Home = lazy(()=>import('../view/Home'))
 const Page1 = lazy(()=>import('../view/About'))
 
@@ -54,6 +55,10 @@ const paths = [
     {
         path:'/login',
         element:<Login/>
+    },
+    {
+        path:'register',
+        element:<Register/>
     },
     {
         path:'*',

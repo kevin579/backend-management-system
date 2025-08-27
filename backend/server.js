@@ -1,17 +1,19 @@
 import express from "express";
 import axios from "axios";
 import cors from "cors";
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const RECAPTCHA_SECRET = "6LdSXLMrAAAAAHcjG_xxNEQciklYb5pOeUfBu_Zy";
-
-app.post("/api/login", async (req, res) => {
-  const { username, password, captcha } = req.body;
+const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET;
 
   // 1. Verify captcha with Google
+const checkCaptcha = async(req,res,next)=>{
+  const {captcha} = req.body;
   try {
     const captchaVerify = await axios.post(
       `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET}&response=${captcha}`
@@ -23,13 +25,47 @@ app.post("/api/login", async (req, res) => {
   } catch (err) {
     return res.status(500).json({ message: "Captcha verification error" });
   }
+  next();
+}
 
-  // 2. Verify username & password (mock)
-  if (username === "admin" && password === "1234") {
+app.post("/api/login",checkCaptcha,(req, res) => {
+  const { username, password } = req.body;
+
+   if (username === "admin" && password === "1234") {
     return res.json({ message: "Login success" });
   } else {
     return res.status(401).json({ message: "Invalid credentials" });
   }
+});
+
+app.post("/api/register",checkCaptcha,(req, res) => {
+  const { username, password, password2 } = req.body;
+
+  console.log(password,password2);
+
+  //check for username
+  if (username ==='admin'){
+    return res.json({state:1,message:'Username already exist'});
+  }
+
+  //check for password
+  if (password != password2){
+    return res.json({state:2,message:'Password does not match'});
+  }
+  if (password.length<8){
+    return res.json({state:3,message:'Password must be at least 8 characters long'});
+  }
+
+  const numRule = /[0-9]/
+  const letterRule = /[A-Za-z]/
+  if (!numRule.test(password)){
+    return res.json({state:4,message:'Password must contain numberss'});
+  }
+  if (!letterRule.test(password)){
+    return res.json({state:5,message:'Password must contain letters'});
+  }
+
+  return res.json({state:0,message:'Registered successfully'});
 });
 
 app.listen(4000, () => {
