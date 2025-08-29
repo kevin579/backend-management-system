@@ -1,23 +1,33 @@
 import {useEffect, useState, useRef, type ChangeEvent} from 'react'
 import { useNavigate } from 'react-router-dom';
+
+// Antd styles
 import { Input, Space, Button } from "antd";
-import ReCAPTCHA from "react-google-recaptcha";
 import '@ant-design/v5-patch-for-react-19';
+
+// Captch
+import ReCAPTCHA from "react-google-recaptcha";
 
 import style from './login.module.scss'
 import background from "./init.ts"
 import './login.less'
 
 const View = ()=>{
-
+    // Set State
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
     const [password2,setPassword2] = useState('');
     const [captcha,setCaptcha] = useState('');
-    const navigate = useNavigate();
+
+    //Set Ref
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const promptRef = useRef<HTMLParagraphElement>(null);
 
+    // Enable Navigate
+    const navigate = useNavigate();
+
+    
+    //Handle Input changes
     const usernameChange = (e:ChangeEvent<HTMLInputElement>)=>{
         setUsername(e.target.value);
         console.log(username);
@@ -36,32 +46,39 @@ const View = ()=>{
         console.log(value);
     }
 
+    //When the user clicks submit, send the data to backend
     const handleRegister = async()=>{
+        // Verify Captch
         if (!captcha){
             promptRef.current!.innerHTML='Please verify';
             return;
         }
-        console.log(username,password,password,captcha);
+        // Fetch data
         const res = await fetch('http://127.0.0.1:4000/api/register',{
             method:'POST',
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify({username,password,password2,captcha})
         })
 
+        // Get and show register state
         const data = await res.json();
-
         console.log(data.state,data.message);
         promptRef.current!.innerHTML=data.message;
+
+        // Redirect to login page
         if (data.state===0){
             promptRef.current!.style.color = 'green';
             setTimeout(()=>{
                 navigate('/login')
             },2000)
         }
+        
+        // Reset Captch
         recaptchaRef.current?.reset();
         setCaptcha('');
     }
 
+    // Handle backgrounnd
     useEffect(()=>{
         background();
         window.onresize = ()=>background();
