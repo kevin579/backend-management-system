@@ -11,14 +11,14 @@
 .container {
   position: absolute;
   margin: auto;
-  top: 0;
+  top: 150px;
   width: 100vw;
-  height: 100vh;
+//   height: 100vh;
   min-height: 200px;
 
   display: flex;
   flex-direction: column;
-  justify-content: center; /* centers horizontally */
+//   justify-content: center; /* centers horizontally */
   align-items: center;     /* centers vertically */
 }
 

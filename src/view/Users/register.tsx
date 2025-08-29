@@ -16,6 +16,7 @@ const View = ()=>{
     const [captcha,setCaptcha] = useState('');
     const navigate = useNavigate();
     const recaptchaRef = useRef<ReCAPTCHA>(null);
+    const promptRef = useRef<HTMLParagraphElement>(null);
 
     const usernameChange = (e:ChangeEvent<HTMLInputElement>)=>{
         setUsername(e.target.value);
@@ -37,7 +38,7 @@ const View = ()=>{
 
     const handleRegister = async()=>{
         if (!captcha){
-            alert('Please verify')
+            promptRef.current!.innerHTML='Please verify';
             return;
         }
         console.log(username,password,password,captcha);
@@ -50,8 +51,12 @@ const View = ()=>{
         const data = await res.json();
 
         console.log(data.state,data.message);
+        promptRef.current!.innerHTML=data.message;
         if (data.state===0){
-            navigate('/login')
+            promptRef.current!.style.color = 'green';
+            setTimeout(()=>{
+                navigate('/login')
+            },2000)
         }
         recaptchaRef.current?.reset();
         setCaptcha('');
@@ -71,17 +76,19 @@ const View = ()=>{
                     <h1>Backend Management System</h1>
                     <p>2025-08-20 Edition</p>
                 </div>
-                <div className={style.form}>
+                <div className={style.form} style={{textAlign:'center'}}>
                     <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
                         <Input placeholder="Username" onChange={usernameChange}/>
                         <Input.Password placeholder="Password" onChange={passwordChange}/>
                         <Input.Password placeholder="Confirm Password" onChange={passwordChange2}/>
+                        
                         <ReCAPTCHA
                             ref = {recaptchaRef}
                             sitekey="6LdSXLMrAAAAALiDDFTu7ujJcNKuyPYbJ0hsuRtI"
                             onChange={captchaChange}
                         />
                         <Button type="primary" block onClick={handleRegister}>Register</Button>
+                        <p ref = {promptRef} style={{color:'red'}}></p>
                     </Space>
                 </div>
             </div>

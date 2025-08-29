@@ -44,25 +44,28 @@ app.post("/api/register",checkCaptcha,(req, res) => {
   console.log(password,password2);
 
   //check for username
+  if (!username){
+    return res.json({state:10,message:'Username must not be empty'});
+  }
   if (username ==='admin'){
-    return res.json({state:1,message:'Username already exist'});
+    return res.json({state:11,message:'Username already exist'});
   }
 
   //check for password
   if (password != password2){
-    return res.json({state:2,message:'Password does not match'});
+    return res.json({state:20,message:'Password does not match'});
   }
   if (password.length<8){
-    return res.json({state:3,message:'Password must be at least 8 characters long'});
+    return res.json({state:21,message:'Password must be at least 8 characters long'});
   }
 
   const numRule = /[0-9]/
   const letterRule = /[A-Za-z]/
   if (!numRule.test(password)){
-    return res.json({state:4,message:'Password must contain numberss'});
+    return res.json({state:22,message:'Password must contain numberss'});
   }
   if (!letterRule.test(password)){
-    return res.json({state:5,message:'Password must contain letters'});
+    return res.json({state:23,message:'Password must contain letters'});
   }
 
   return res.json({state:0,message:'Registered successfully'});
