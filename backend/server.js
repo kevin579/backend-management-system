@@ -2,6 +2,9 @@ import express from "express";
 import axios from "axios";
 import cors from "cors";
 import dotenv from 'dotenv'
+import {v4 as uuid} from 'uuid'
+import bcrypt from "bcrypt";
+
 
 import connectDB from './db/db.js'
 import model from "./db/model.js";
@@ -13,7 +16,6 @@ app.use(cors());
 app.use(express.json());
 
 connectDB();
-
 const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET;
 
 // Middleware: Verify captcha with Google
@@ -47,17 +49,14 @@ app.post("/api/login",checkCaptcha,(req, res) => {
 // Handle Register
 app.post("/api/register",checkCaptcha, async (req, res) => {
 
-  const users = await model.find();
-  console.log(users);
   const { username, password, password2 } = req.body;
-
-  console.log(password,password2);
+  const repeat = await model.find({uname:username})
 
   //check for username
   if (!username){
     return res.json({state:10,message:'Username must not be empty'});
   }
-  if (username ==='admin'){
+  if (repeat.length>0){
     return res.json({state:11,message:'Username already exist'});
   }
 
@@ -76,6 +75,16 @@ app.post("/api/register",checkCaptcha, async (req, res) => {
   }
   if (!letterRule.test(password)){
     return res.json({state:23,message:'Password must contain letters'});
+  }
+
+  try {
+    model.create({
+      id:uuid(),
+      uname:username,
+      password:await bcrypt.hash(password, 10)
+    })
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 
   return res.json({state:0,message:'Registered successfully'});
