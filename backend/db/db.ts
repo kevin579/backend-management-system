@@ -3,9 +3,13 @@
  * @param {*} success 
  * @param {*} error 
  */
-module.exports = function(success,error){
-    const mongoose = require('mongoose')
-    const {DBHOST:host,DBPORT:port,DBNAME:name} = require('./config.js')
+import mongoose from "mongoose"
+import config from './config.ts'
+
+export default function(success,error){
+    //get the database config
+    const {DBHOST:host,DBPORT:port,DBNAME:name} = config;
+    
     console.log(`mongodb://${host}:${port}/${name}`)
     mongoose.connect(`mongodb://${host}:${port}/${name}`);
 

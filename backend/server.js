@@ -11,7 +11,7 @@ app.use(express.json());
 
 const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET;
 
-  // 1. Verify captcha with Google
+// Middleware: Verify captcha with Google
 const checkCaptcha = async(req,res,next)=>{
   const {captcha} = req.body;
   try {
@@ -28,6 +28,7 @@ const checkCaptcha = async(req,res,next)=>{
   next();
 }
 
+//Handle login
 app.post("/api/login",checkCaptcha,(req, res) => {
   const { username, password } = req.body;
 
@@ -38,6 +39,7 @@ app.post("/api/login",checkCaptcha,(req, res) => {
   }
 });
 
+// Handle Register
 app.post("/api/register",checkCaptcha,(req, res) => {
   const { username, password, password2 } = req.body;
 

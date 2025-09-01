@@ -1,5 +1,5 @@
-module.exports = {
+export default {
     DBHOST:  '127.0.0.1',
     DBPORT: 27017,
-    DBNAME: 'learn'
+    DBNAME: 'users'
 }
