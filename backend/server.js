@@ -3,11 +3,16 @@ import axios from "axios";
 import cors from "cors";
 import dotenv from 'dotenv'
 
+import connectDB from './db/db.js'
+import model from "./db/model.js";
+
 dotenv.config()
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+connectDB();
 
 const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET;
 
@@ -40,7 +45,10 @@ app.post("/api/login",checkCaptcha,(req, res) => {
 });
 
 // Handle Register
-app.post("/api/register",checkCaptcha,(req, res) => {
+app.post("/api/register",checkCaptcha, async (req, res) => {
+
+  const users = await model.find();
+  console.log(users);
   const { username, password, password2 } = req.body;
 
   console.log(password,password2);
