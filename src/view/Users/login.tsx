@@ -57,7 +57,7 @@ const View = ()=>{
         if (res.ok){
             navigate('/')
         }else{
-            alert('Invalid Usernam or Password')
+            alert('Invalid Username or Password')
         }
 
         //Reset Captch

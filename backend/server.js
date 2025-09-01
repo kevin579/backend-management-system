@@ -36,14 +36,18 @@ const checkCaptcha = async(req,res,next)=>{
 }
 
 //Handle login
-app.post("/api/login",checkCaptcha,(req, res) => {
+app.post("/api/login",checkCaptcha,async (req, res) => {
   const { username, password } = req.body;
-
-   if (username === "admin" && password === "1234") {
+  const storedUser = await model.find({uname:username})
+  if (storedUser.length>0){
+    const isMatch = await bcrypt.compare(password, storedUser[0].password);
+  if (isMatch) {
     return res.json({ message: "Login success" });
   } else {
     return res.status(401).json({ message: "Invalid credentials" });
   }
+   }
+   
 });
 
 // Handle Register
