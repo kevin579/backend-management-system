@@ -11,6 +11,7 @@ export default function About() {
 
   return (
     <div className='home'>
+        <h1>This is an example usage of redux store</h1>
         <p>The num is {num}</p>
         <button onClick ={()=>dispatch(add())}>Add</button>
         <button onClick ={()=>dispatch(add2())}>Add</button>
