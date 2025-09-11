@@ -33,7 +33,7 @@ const Home: React.FC = () => {
       <Layout>
         {/* Top Header */}
         <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Breadcrumb style={{ margin: '18px 14px' }} items={[{ title: 'User' }, { title: 'Bill' }]} />
+          <Breadcrumb style={{ margin: '18px 14px' }} items={[{ title: 'Home' }, { title: 'Main Page' }]} />
         </Header>
         {/* Content Area*/}
         <Content style={{ margin: '16px 16px',padding: 24,minHeight: 360,background: colorBgContainer,borderRadius: borderRadiusLG, }}>

@@ -1,6 +1,4 @@
-// import { useState } from 'react'
-// import { Button } from "antd"
-// import '@ant-design/v5-patch-for-react-19';
+
 import {useRoutes } from "react-router-dom"
 import router from './router'
 function App() {

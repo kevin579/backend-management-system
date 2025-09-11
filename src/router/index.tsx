@@ -3,7 +3,7 @@ import {Navigate } from 'react-router-dom'
 import Login from '../view/Users/login'
 import Register from '../view/Users/register'
 const Home = lazy(()=>import('../view/Home'))
-const Page1 = lazy(()=>import('../view/About'))
+const Page1 = lazy(()=>import('../view/Test'))
 
 
 const withLoadingComponent = (component:JSX.Element)=>{
