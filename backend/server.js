@@ -85,10 +85,11 @@ app.post("/api/register",checkCaptcha, async (req, res) => {
     model.create({
       id:uuid(),
       uname:username,
-      password:await bcrypt.hash(password, 10)
+      password:await bcrypt.hash(password, 10) 
     })
   } catch (err) {
     res.status(500).json({ error: err.message });
+    console.log("invalid login");
   }
 
   return res.json({state:0,message:'Registered successfully'});
